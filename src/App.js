@@ -26,10 +26,10 @@ function App() {
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.SOLANA,
-            chainId: "0x1", // Mainnet
-            rpcTarget: "https://api.mainnet-beta.solana.com", // Mainnet RPC URL
+            chainId: "0x1", // Solana mainnet
+            rpcTarget: "https://api.mainnet-beta.solana.com",
           },
-          web3AuthNetwork: "cyan"
+          web3AuthNetwork: "sapphire_mainnet"
         });
 
         setWeb3auth(web3auth);
@@ -111,7 +111,7 @@ function App() {
     setIsLoading(true);
     try {
       const solanaWallet = new SolanaWallet(provider);
-      const connection = new Connection(clusterApiUrl("devnet"));
+      const connection = new Connection(clusterApiUrl("mainnet-beta"));
       const accounts = await solanaWallet.requestAccounts();
       const balance = await connection.getBalance(new PublicKey(accounts[0]));
       setBalance(balance / 1000000000); // Convert lamports to SOL
@@ -132,7 +132,7 @@ function App() {
     setIsLoading(true);
     try {
       const solanaWallet = new SolanaWallet(provider);
-      const connection = new Connection(clusterApiUrl("devnet"));
+      const connection = new Connection(clusterApiUrl("mainnet-beta"));
       const accounts = await solanaWallet.requestAccounts();
       const fromPublicKey = new PublicKey(accounts[0]);
       const block = await connection.getLatestBlockhash("finalized");
