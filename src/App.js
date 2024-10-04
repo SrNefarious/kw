@@ -22,19 +22,37 @@ function App() {
     const init = async () => {
       try {
         console.log("Initializing Web3Auth...");
+        console.log("Client ID:", clientId);
         const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.SOLANA,
-            chainId: "0x1", // Solana mainnet
-            rpcTarget: "https://api.mainnet-beta.solana.com",
+            chainId: "0x3", // Solana devnet
+            rpcTarget: clusterApiUrl("devnet"),
+            displayName: "Solana Devnet",
+            blockExplorer: "https://explorer.solana.com?cluster=devnet",
+            ticker: "SOL",
+            tickerName: "Solana",
           },
-          web3AuthNetwork: "sapphire_mainnet"
+          uiConfig: {
+            appName: "KROSSWALKS",
+            mode: "dark",
+            loginMethodsOrder: ["google", "facebook", "twitter", "email_passwordless"]
+          }
         });
 
         setWeb3auth(web3auth);
         await web3auth.initModal();
-        console.log("Web3Auth initialized");
+        console.log("Web3Auth initialized successfully");
+
+        if (web3auth.connected) {
+          const web3authProvider = web3auth.provider;
+          setProvider(web3authProvider);
+          const solanaWallet = new SolanaWallet(web3authProvider);
+          const accounts = await solanaWallet.requestAccounts();
+          setAddress(accounts[0]);
+          console.log("User is already logged in");
+        }
       } catch (error) {
         console.error("Error during initialization:", error);
         setError(error.message);
@@ -44,13 +62,6 @@ function App() {
     init();
   }, []);
 
-  useEffect(() => {
-    if (error) {
-      const timer = setTimeout(() => setError(null), 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [error]);
-
   const login = async () => {
     if (!web3auth) {
       console.log("web3auth not initialized yet");
@@ -58,14 +69,19 @@ function App() {
     }
     setIsLoading(true);
     try {
+      console.log("Attempting to connect...");
       const web3authProvider = await web3auth.connect();
+      console.log("Connected successfully, provider:", web3authProvider);
       setProvider(web3authProvider);
       const solanaWallet = new SolanaWallet(web3authProvider);
       const accounts = await solanaWallet.requestAccounts();
+      console.log("Accounts received:", accounts);
       setAddress(accounts[0]);
       setDisplayInfo(null);
+      console.log("Login successful, address:", accounts[0]);
     } catch (error) {
       console.error("Error during login:", error);
+      console.error("Error details:", JSON.stringify(error, null, 2));
       setError(error.message);
     } finally {
       setIsLoading(false);
@@ -82,6 +98,7 @@ function App() {
       const user = await web3auth.getUserInfo();
       setUserInfo(user);
       setDisplayInfo('userInfo');
+      console.log("User info retrieved:", user);
     } catch (error) {
       console.error("Error getting user info:", error);
       setError(error.message);
@@ -95,12 +112,18 @@ function App() {
       console.log("web3auth not initialized yet");
       return;
     }
-    await web3auth.logout();
-    setProvider(null);
-    setAddress("");
-    setBalance(null);
-    setUserInfo(null);
-    setDisplayInfo(null);
+    try {
+      await web3auth.logout();
+      setProvider(null);
+      setAddress("");
+      setBalance(null);
+      setUserInfo(null);
+      setDisplayInfo(null);
+      console.log("Logged out successfully");
+    } catch (error) {
+      console.error("Error during logout:", error);
+      setError(error.message);
+    }
   };
 
   const getBalance = async () => {
@@ -111,11 +134,12 @@ function App() {
     setIsLoading(true);
     try {
       const solanaWallet = new SolanaWallet(provider);
-      const connection = new Connection(clusterApiUrl("mainnet-beta"));
+      const connection = new Connection(clusterApiUrl("devnet"));
       const accounts = await solanaWallet.requestAccounts();
       const balance = await connection.getBalance(new PublicKey(accounts[0]));
       setBalance(balance / 1000000000); // Convert lamports to SOL
       setDisplayInfo('balance');
+      console.log("Balance retrieved:", balance / 1000000000);
     } catch (error) {
       console.error("Error getting balance:", error);
       setError(error.message);
@@ -132,7 +156,7 @@ function App() {
     setIsLoading(true);
     try {
       const solanaWallet = new SolanaWallet(provider);
-      const connection = new Connection(clusterApiUrl("mainnet-beta"));
+      const connection = new Connection(clusterApiUrl("devnet"));
       const accounts = await solanaWallet.requestAccounts();
       const fromPublicKey = new PublicKey(accounts[0]);
       const block = await connection.getLatestBlockhash("finalized");
@@ -148,6 +172,7 @@ function App() {
       const signedTransaction = await solanaWallet.signTransaction(transaction);
       const signature = await connection.sendRawTransaction(signedTransaction.serialize());
       await connection.confirmTransaction(signature);
+      console.log("Transaction sent successfully:", signature);
       setError("Transaction sent successfully: " + signature);
       getBalance(); // Refresh balance after transaction
     } catch (error) {
