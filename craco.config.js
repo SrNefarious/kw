@@ -3,7 +3,6 @@ const webpack = require('webpack');
 module.exports = {
   webpack: {
     configure: (webpackConfig) => {
-      // Existing fallback configuration
       if (!webpackConfig.resolve) {
         webpackConfig.resolve = {};
       }
@@ -19,19 +18,16 @@ module.exports = {
         zlib: require.resolve('browserify-zlib')
       };
 
-      // Remove any existing DefinePlugin instances
       webpackConfig.plugins = webpackConfig.plugins.filter(
         (plugin) => !(plugin instanceof webpack.DefinePlugin)
       );
 
-      // Add a new DefinePlugin instance
       webpackConfig.plugins.push(
         new webpack.DefinePlugin({
           'process.env': JSON.stringify(process.env)
         })
       );
 
-      // Add ProvidePlugin
       webpackConfig.plugins.push(
         new webpack.ProvidePlugin({
           process: 'process/browser',

@@ -22,6 +22,12 @@ function App() {
     const init = async () => {
       try {
         console.log("Initializing Web3Auth...");
+        console.log("Client ID:", clientId);
+        console.log("Chain Config:", {
+          chainNamespace: CHAIN_NAMESPACES.SOLANA,
+          chainId: "0x3",
+          rpcTarget: clusterApiUrl("devnet"),
+        });
         const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
@@ -37,6 +43,7 @@ function App() {
         console.log("Web3Auth initialized");
       } catch (error) {
         console.error("Error during initialization:", error);
+        console.error("Error details:", JSON.stringify(error, null, 2));
         setError(error.message);
       }
     };
