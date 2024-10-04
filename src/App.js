@@ -22,13 +22,12 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
+        console.log("Environment:", process.env.NODE_ENV);
         console.log("Initializing Web3Auth...");
         console.log("Client ID:", clientId);
-        console.log("Chain Config:", {
-          chainNamespace: CHAIN_NAMESPACES.SOLANA,
-          chainId: "0x3",
-          rpcTarget: clusterApiUrl("devnet"),
-        });
+  
+        const web3AuthNetwork = process.env.NODE_ENV === 'production' ? "mainnet" : "testnet";
+        console.log("Web3Auth Network:", web3AuthNetwork);
   
         const web3auth = new Web3Auth({
           clientId,
@@ -37,12 +36,12 @@ function App() {
             chainId: "0x3", // Devnet
             rpcTarget: clusterApiUrl("devnet"),
           },
-          web3AuthNetwork: "testnet"
+          web3AuthNetwork: web3AuthNetwork
         });
   
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            network: "testnet",
+            network: web3AuthNetwork,
             clientId: clientId,
             uxMode: "popup",
           },
@@ -52,24 +51,19 @@ function App() {
   
         setWeb3auth(web3auth);
         await web3auth.initModal();
-        console.log("Web3Auth initialized");
-        
-        // Safe access to properties
-        console.log("Web3Auth network:", web3auth.options?.web3AuthNetwork);
-        console.log("OpenloginAdapter network:", openloginAdapter.adapterSettings?.network);
-        
-        // Additional logging
-        console.log("Web3Auth full options:", JSON.stringify(web3auth.options, null, 2));
-        console.log("OpenloginAdapter full settings:", JSON.stringify(openloginAdapter.adapterSettings, null, 2));
+        console.log("Web3Auth initialized successfully");
+        console.log("Web3Auth options:", JSON.stringify(web3auth.options, null, 2));
+        console.log("OpenloginAdapter settings:", JSON.stringify(openloginAdapter.adapterSettings, null, 2));
       } catch (error) {
-        console.error("Error during initialization:", error);
+        console.error("Initialization error:", error);
         console.error("Error details:", JSON.stringify(error, null, 2));
-        setError(error.message || "An unknown error occurred during initialization");
+        setError(`Initialization error: ${error.message}`);
       }
     };
   
     init();
   }, []);
+  
   
 
   const login = async () => {
@@ -90,13 +84,14 @@ function App() {
       setDisplayInfo(null);
       console.log("Login successful, address:", accounts[0]);
     } catch (error) {
-      console.error("Error during login:", error);
+      console.error("Login error:", error);
       console.error("Error details:", JSON.stringify(error, null, 2));
-      setError(error.message);
+      setError(`Login error: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   const getUserInfo = async () => {
     if (!web3auth) {
