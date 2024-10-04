@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { SolanaWallet } from "@web3auth/solana-provider";
 import { Connection, SystemProgram, Transaction, clusterApiUrl, PublicKey } from "@solana/web3.js";
 import './App.css';
@@ -28,6 +29,7 @@ function App() {
           chainId: "0x3",
           rpcTarget: clusterApiUrl("devnet"),
         });
+  
         const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
@@ -37,19 +39,38 @@ function App() {
           },
           web3AuthNetwork: "testnet"
         });
-
+  
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            network: "testnet",
+            clientId: clientId,
+            uxMode: "popup",
+          },
+        });
+  
+        web3auth.configureAdapter(openloginAdapter);
+  
         setWeb3auth(web3auth);
         await web3auth.initModal();
         console.log("Web3Auth initialized");
+        
+        // Safe access to properties
+        console.log("Web3Auth network:", web3auth.options?.web3AuthNetwork);
+        console.log("OpenloginAdapter network:", openloginAdapter.adapterSettings?.network);
+        
+        // Additional logging
+        console.log("Web3Auth full options:", JSON.stringify(web3auth.options, null, 2));
+        console.log("OpenloginAdapter full settings:", JSON.stringify(openloginAdapter.adapterSettings, null, 2));
       } catch (error) {
         console.error("Error during initialization:", error);
         console.error("Error details:", JSON.stringify(error, null, 2));
-        setError(error.message);
+        setError(error.message || "An unknown error occurred during initialization");
       }
     };
-
+  
     init();
   }, []);
+  
 
   const login = async () => {
     if (!web3auth) {

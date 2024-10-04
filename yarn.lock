@@ -3494,7 +3494,7 @@
     "@web3auth/base" "^7.3.2"
     bs58 "^5.0.0"
 
-"@web3auth/base@^7.3.2":
+"@web3auth/base@^7.2.0", "@web3auth/base@^7.3.2":
   version "7.3.2"
   resolved "https://registry.yarnpkg.com/@web3auth/base/-/base-7.3.2.tgz#62074e647738d42a2b4eff8faffb20c532394dfa"
   integrity sha512-Bg5Mjqr51ETTRtya+4+v2G/OUjHPbkuRbtLGFjQ4uzrBuFokbEaE70kodnR7ZpIhOn41p8nciSxEo1ZJT+rBUQ==
@@ -3567,7 +3567,7 @@
     "@web3auth/base-plugin" "^7.3.2"
     "@web3auth/base-provider" "^7.3.2"
 
-"@web3auth/openlogin-adapter@^7.3.2":
+"@web3auth/openlogin-adapter@^7.2.0", "@web3auth/openlogin-adapter@^7.3.2":
   version "7.3.2"
   resolved "https://registry.yarnpkg.com/@web3auth/openlogin-adapter/-/openlogin-adapter-7.3.2.tgz#ee0188f3e1dd14b4fe92a027aec3dfb197d0c343"
   integrity sha512-XglDc+lvOuy9JGW8xvIQymAmjOU6rHU8GZiyNV1CAN9PySfpAekfDYQEc791G4Pgg24Ka0EJTfEOh96r88OUlg==
