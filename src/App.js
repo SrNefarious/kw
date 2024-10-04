@@ -22,37 +22,19 @@ function App() {
     const init = async () => {
       try {
         console.log("Initializing Web3Auth...");
-        console.log("Client ID:", clientId);
         const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.SOLANA,
-            chainId: "0x3", // Solana devnet
+            chainId: "0x3", // Devnet
             rpcTarget: clusterApiUrl("devnet"),
-            displayName: "Solana Devnet",
-            blockExplorer: "https://explorer.solana.com?cluster=devnet",
-            ticker: "SOL",
-            tickerName: "Solana",
           },
-          uiConfig: {
-            appName: "KROSSWALKS",
-            mode: "dark",
-            loginMethodsOrder: ["google", "facebook", "twitter", "email_passwordless"]
-          }
+          web3AuthNetwork: "testnet"
         });
 
         setWeb3auth(web3auth);
         await web3auth.initModal();
-        console.log("Web3Auth initialized successfully");
-
-        if (web3auth.connected) {
-          const web3authProvider = web3auth.provider;
-          setProvider(web3authProvider);
-          const solanaWallet = new SolanaWallet(web3authProvider);
-          const accounts = await solanaWallet.requestAccounts();
-          setAddress(accounts[0]);
-          console.log("User is already logged in");
-        }
+        console.log("Web3Auth initialized");
       } catch (error) {
         console.error("Error during initialization:", error);
         setError(error.message);
