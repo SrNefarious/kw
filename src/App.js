@@ -26,7 +26,7 @@ function App() {
         console.log("Initializing Web3Auth...");
         console.log("Client ID:", clientId);
   
-        const web3AuthNetwork = process.env.NODE_ENV === 'production' ? "mainnet" : "testnet";
+        const web3AuthNetwork = process.env.NODE_ENV === 'production' ? "testnet" : "testnet";
         console.log("Web3Auth Network:", web3AuthNetwork);
   
         const web3auth = new Web3Auth({
