@@ -2560,7 +2560,7 @@
 
 "@toruslabs/base-controllers@^5.5.5":
   version "5.11.0"
-  resolved "https://registry.npmjs.org/@toruslabs/base-controllers/-/base-controllers-5.11.0.tgz"
+  resolved "https://registry.yarnpkg.com/@toruslabs/base-controllers/-/base-controllers-5.11.0.tgz#39cb9ec3d3a9861997a5c4e0699dce5348b04f0a"
   integrity sha512-5AsGOlpf3DRIsd6PzEemBoRq+o2OhgSFXj5LZD6gXcBlfe0OpF+ydJb7Q8rIt5wwpQLNJCs8psBUbqIv7ukD2w==
   dependencies:
     "@ethereumjs/util" "^9.0.3"
@@ -2583,7 +2583,7 @@
 
 "@toruslabs/broadcast-channel@^10.0.2":
   version "10.0.2"
-  resolved "https://registry.npmjs.org/@toruslabs/broadcast-channel/-/broadcast-channel-10.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/@toruslabs/broadcast-channel/-/broadcast-channel-10.0.2.tgz#90da5a9ea9e61374355f3d915e983cb177a45844"
   integrity sha512-aZbKNgV/OhiTKSdxBTGO86xRdeR7Ct1vkB8yeyXRX32moARhZ69uJQL49jKh4cWKV3VeijrL9XvKdn5bzgHQZg==
   dependencies:
     "@babel/runtime" "^7.24.0"
@@ -2610,12 +2610,12 @@
 
 "@toruslabs/constants@^13.1.0", "@toruslabs/constants@^13.2.0":
   version "13.4.0"
-  resolved "https://registry.npmjs.org/@toruslabs/constants/-/constants-13.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/@toruslabs/constants/-/constants-13.4.0.tgz#4e986a4d6b87bf0e8a389dddabbb21ed6a1a1320"
   integrity sha512-CjmnMQ5Oj0bqSBGkhv7Xm3LciGJDHwe4AJ1LF6mijlP+QcCnUM5I6kVp60j7zZ/r0DT7nIEiuHHHczGpCZor0A==
 
 "@toruslabs/eccrypto@^4.0.0":
   version "4.0.0"
-  resolved "https://registry.npmjs.org/@toruslabs/eccrypto/-/eccrypto-4.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/@toruslabs/eccrypto/-/eccrypto-4.0.0.tgz#0b27ed2d1e9483e77f42a7619a2c3c19cb802f44"
   integrity sha512-Z3EINkbsgJx1t6jCDVIJjLSUEGUtNIeDjhMWmeDGOWcP/+v/yQ1hEvd1wfxEz4q5WqIHhevacmPiVxiJ4DljGQ==
   dependencies:
     elliptic "^6.5.4"
@@ -2670,7 +2670,7 @@
 
 "@toruslabs/openlogin-jrpc@^8.1.1", "@toruslabs/openlogin-jrpc@^8.3.0":
   version "8.3.0"
-  resolved "https://registry.npmjs.org/@toruslabs/openlogin-jrpc/-/openlogin-jrpc-8.3.0.tgz"
+  resolved "https://registry.yarnpkg.com/@toruslabs/openlogin-jrpc/-/openlogin-jrpc-8.3.0.tgz#9c6c373b0b9052ae5317b7977af5ec16bdfa9897"
   integrity sha512-1OdSkUXGXJobkkMIJHuf+XzwmUB4ROy6uQfPEJ3NXvNj84+N4hNpvC4JPg7VoWBHdfCba9cv6QnQsVArlwai4A==
   dependencies:
     end-of-stream "^1.4.4"
@@ -2699,7 +2699,7 @@
 
 "@toruslabs/openlogin-utils@^8.2.1":
   version "8.2.1"
-  resolved "https://registry.npmjs.org/@toruslabs/openlogin-utils/-/openlogin-utils-8.2.1.tgz"
+  resolved "https://registry.yarnpkg.com/@toruslabs/openlogin-utils/-/openlogin-utils-8.2.1.tgz#88e6f3d0e17b1f15dafd1c9d9daa3bbb8054912b"
   integrity sha512-NSOtj61NZe7w9qbd92cYwMlE/1UwPGtDH02NfUjoEEc3p1yD5U2cLZjdSwsnAgjGNgRqVomXpND4hii12lI/ew==
   dependencies:
     "@toruslabs/constants" "^13.2.0"
@@ -6352,7 +6352,7 @@ etag@~1.8.1:
 
 eth-rpc-errors@^4.0.3:
   version "4.0.3"
-  resolved "https://registry.npmjs.org/eth-rpc-errors/-/eth-rpc-errors-4.0.3.tgz"
+  resolved "https://registry.yarnpkg.com/eth-rpc-errors/-/eth-rpc-errors-4.0.3.tgz#6ddb6190a4bf360afda82790bb7d9d5e724f423a"
   integrity sha512-Z3ymjopaoft7JDoxZcEb3pwdGh7yiYMhOwm2doUt6ASXlMavpNlK6Cre0+IMl2VSGyEU9rkiperQhp5iRxn5Pg==
   dependencies:
     fast-safe-stringify "^2.0.6"
@@ -8662,7 +8662,7 @@ locate-path@^6.0.0:
 
 lodash-es@^4.17.21:
   version "4.17.21"
-  resolved "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.21.tgz"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
 
 lodash.clonedeep@^4.5.0:
