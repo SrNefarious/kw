@@ -8,7 +8,8 @@ const chainConfig = {
   blockExplorerUrl: process.env.REACT_APP_BLOCK_EXPLORER_URL || "https://explorer.solana.com",
   ticker: "SOL",
   tickerName: "Solana",
-  logo: "https://images.toruswallet.io/solana.svg",
 };
+
+export const web3AuthNetwork = process.env.REACT_APP_WEB3AUTH_NETWORK || "sapphire_devnet";
 
 export default chainConfig;

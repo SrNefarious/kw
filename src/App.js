@@ -24,6 +24,7 @@ function App() {
         const web3auth = new Web3Auth({
           clientId,
           chainConfig,
+          web3AuthNetwork,
         });
 
         setWeb3auth(web3auth);
