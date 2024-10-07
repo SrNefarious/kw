@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Web3Auth } from "@web3auth/modal";
 import { SolanaWallet } from "@web3auth/solana-provider";
 import { Connection, SystemProgram, Transaction, PublicKey } from "@solana/web3.js";
-import chainConfig from './chainConfig';
+import chainConfig, { web3AuthNetwork } from './chainConfig';
 import './App.css';
 
 const clientId = process.env.REACT_APP_WEB3AUTH_CLIENT_ID;
