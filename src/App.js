@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { SolanaWallet } from "@web3auth/solana-provider";
-import { Connection, SystemProgram, Transaction, clusterApiUrl, PublicKey } from "@solana/web3.js";
+import { Connection, SystemProgram, Transaction, PublicKey } from "@solana/web3.js";
+import chainConfig from './chainConfig';
 import './App.css';
 
 const clientId = process.env.REACT_APP_WEB3AUTH_CLIENT_ID;
@@ -22,49 +21,22 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        console.log("Environment:", process.env.NODE_ENV);
-        console.log("Initializing Web3Auth...");
-        console.log("Client ID:", clientId);
-  
-        const web3AuthNetwork = process.env.NODE_ENV === 'production' ? "mainnet" : "testnet";
-        console.log("Web3Auth Network:", web3AuthNetwork);
-  
         const web3auth = new Web3Auth({
           clientId,
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.SOLANA,
-            chainId: "0x3", // Devnet
-            rpcTarget: clusterApiUrl("devnet"),
-          },
-          web3AuthNetwork: web3AuthNetwork
+          chainConfig,
         });
-  
-        const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            network: web3AuthNetwork,
-            clientId: clientId,
-            uxMode: "popup",
-          },
-        });
-  
-        web3auth.configureAdapter(openloginAdapter);
-  
+
         setWeb3auth(web3auth);
         await web3auth.initModal();
-        console.log("Web3Auth initialized successfully");
-        console.log("Web3Auth options:", JSON.stringify(web3auth.options, null, 2));
-        console.log("OpenloginAdapter settings:", JSON.stringify(openloginAdapter.adapterSettings, null, 2));
+        console.log("Web3Auth initialized");
       } catch (error) {
-        console.error("Initialization error:", error);
-        console.error("Error details:", JSON.stringify(error, null, 2));
-        setError(`Initialization error: ${error.message}`);
+        console.error("Error during initialization:", error);
+        setError(error.message);
       }
     };
-  
+
     init();
   }, []);
-  
-  
 
   const login = async () => {
     if (!web3auth) {
@@ -73,25 +45,20 @@ function App() {
     }
     setIsLoading(true);
     try {
-      console.log("Attempting to connect...");
       const web3authProvider = await web3auth.connect();
-      console.log("Connected successfully, provider:", web3authProvider);
       setProvider(web3authProvider);
       const solanaWallet = new SolanaWallet(web3authProvider);
       const accounts = await solanaWallet.requestAccounts();
-      console.log("Accounts received:", accounts);
       setAddress(accounts[0]);
       setDisplayInfo(null);
-      console.log("Login successful, address:", accounts[0]);
+      console.log("Logged in with address:", accounts[0]);
     } catch (error) {
-      console.error("Login error:", error);
-      console.error("Error details:", JSON.stringify(error, null, 2));
-      setError(`Login error: ${error.message}`);
+      console.error("Error during login:", error);
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
   };
-  
 
   const getUserInfo = async () => {
     if (!web3auth) {
@@ -103,7 +70,7 @@ function App() {
       const user = await web3auth.getUserInfo();
       setUserInfo(user);
       setDisplayInfo('userInfo');
-      console.log("User info retrieved:", user);
+      console.log("User info:", user);
     } catch (error) {
       console.error("Error getting user info:", error);
       setError(error.message);
@@ -124,7 +91,7 @@ function App() {
       setBalance(null);
       setUserInfo(null);
       setDisplayInfo(null);
-      console.log("Logged out successfully");
+      console.log("Logged out");
     } catch (error) {
       console.error("Error during logout:", error);
       setError(error.message);
@@ -139,12 +106,12 @@ function App() {
     setIsLoading(true);
     try {
       const solanaWallet = new SolanaWallet(provider);
-      const connection = new Connection(clusterApiUrl("devnet"));
+      const connection = new Connection(chainConfig.rpcTarget);
       const accounts = await solanaWallet.requestAccounts();
       const balance = await connection.getBalance(new PublicKey(accounts[0]));
       setBalance(balance / 1000000000); // Convert lamports to SOL
       setDisplayInfo('balance');
-      console.log("Balance retrieved:", balance / 1000000000);
+      console.log("Balance:", balance / 1000000000);
     } catch (error) {
       console.error("Error getting balance:", error);
       setError(error.message);
@@ -161,7 +128,7 @@ function App() {
     setIsLoading(true);
     try {
       const solanaWallet = new SolanaWallet(provider);
-      const connection = new Connection(clusterApiUrl("devnet"));
+      const connection = new Connection(chainConfig.rpcTarget);
       const accounts = await solanaWallet.requestAccounts();
       const fromPublicKey = new PublicKey(accounts[0]);
       const block = await connection.getLatestBlockhash("finalized");
@@ -177,7 +144,7 @@ function App() {
       const signedTransaction = await solanaWallet.signTransaction(transaction);
       const signature = await connection.sendRawTransaction(signedTransaction.serialize());
       await connection.confirmTransaction(signature);
-      console.log("Transaction sent successfully:", signature);
+      console.log("Transaction sent:", signature);
       setError("Transaction sent successfully: " + signature);
       getBalance(); // Refresh balance after transaction
     } catch (error) {
